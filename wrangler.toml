@@ -18,7 +18,7 @@ compatibility_flags = ["nodejs_compat"]
 # Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
 # Docs: https://developers.cloudflare.com/r2/api/workers/workers-api-usage/
 [[r2_buckets]]
-binding = "THE_BUCKET"
+binding = "MY_BUCKET"
 bucket_name = "projectkula"
 
 # Bind a Queue producer. Use this binding to schedule an arbitrary task that may be processed later by a Queue consumer.
