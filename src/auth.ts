@@ -18,9 +18,7 @@ async function authorizeFromBackend(request: Request, env: Env): Promise<boolean
 
 export async function authorizeRequest(request: Request, env: Env) {
 	switch (request.method) {
-		case 'PUT':
 		case 'POST':
-		case 'DELETE':
 			return request.headers.get('X-Auth-Key') === env.AUTH_KEY_SECRET || await authorizeFromBackend(request, env);
 		default:
 			return true;
