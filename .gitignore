@@ -1,6 +1,7 @@
 # Logs
 
 .dev.vars
+.idea
 
 logs
 _.log
