@@ -1,5 +1,6 @@
 import { authorizeRequest } from './auth';
 import { Request } from '@cloudflare/workers-types';
+import { onPost } from './post';
 
 export interface Env {
 	MY_BUCKET: R2Bucket;
@@ -18,11 +19,6 @@ function objectNotFound(objectName: string): Response {
 
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
-		const url = new URL(request.url);
-		const objectName = url.pathname.slice(1);
-
-		console.log(`${request.method} object ${objectName}: ${request.url}`);
-
 		if (!await authorizeRequest(request, env)) {
 			return new Response(`Unauthorized`, {
 				status: 401,
@@ -30,6 +26,10 @@ export default {
 		}
 
 		if (request.method == 'GET') {
+			const url = new URL(request.url);
+			const objectName = url.pathname.slice(1);
+			console.log(`GET object ${objectName}: ${request.url}`);
+
 			const object = await env.MY_BUCKET.get(objectName);
 
 			if (object === null) {
@@ -44,10 +44,7 @@ export default {
 				headers,
 			});
 		} else if (request.method == 'PUT' || request.method == 'POST') {
-			await env.MY_BUCKET.put(objectName, request.body);
-			return new Response(`R2 object "${objectName}" created`, {
-				status: 201,
-			});
+			return onPost(request, env);
 		}
 
 		return new Response(`Unsupported method`, {
