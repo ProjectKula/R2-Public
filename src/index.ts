@@ -21,6 +21,16 @@ export default {
 			return onGet(request, env);
 		} else if (request.method == 'PUT' || request.method == 'POST') {
 			return onPost(request, env);
+		} else if (request.method == 'OPTIONS') {
+			const headers = new Headers();
+			headers.set('Access-Control-Allow-Origin', '*');
+			headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
+			headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+			headers.set('Access-Control-Max-Age', '86400');
+			return new Response("", {
+				status: 204,
+				headers,
+			});
 		}
 
 		return new Response(`Unsupported method`, {

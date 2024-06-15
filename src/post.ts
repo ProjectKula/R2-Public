@@ -10,8 +10,11 @@ export async function onPost(request: Request, env: Env): Promise<Response> {
 			status: 409,
 		});
 	}
-	await env.MY_BUCKET.put(objectName, request.body);
+	const headers = new Headers();
+	await env.MY_BUCKET.put(objectName, await request.body);
+	headers.set('Access-Control-Allow-Origin', '*');
 	return new Response(`R2 object "${objectName}" created`, {
 		status: 201,
+		headers
 	});
 }

@@ -14,6 +14,7 @@ export async function onGet(request: Request, env: Env): Promise<Response> {
 
 	const headers = new Headers();
 	object.writeHttpMetadata(headers);
+	headers.set('Access-Control-Allow-Origin', '*');
 	headers.set('etag', object.httpEtag);
 
 	return new Response(object.body, {
